@@ -1,28 +1,18 @@
 # CRUD de Usuário com Perfil - Express
 
-Uma API RESTful construída com Node.js e Express, utilizando o Prisma ORM para o gerenciamento de um banco de dados MySQL. Este sistema implementa um CRUD completo de usuários, incluindo um relacionamento 1:1 com uma tabela de perfis (criados automaticamente junto com o usuário via *Nested Writes*).
-
-## 🛠️ Tecnologias, Versões e Dependências
-
-As principais ferramentas e versões utilizadas no desenvolvimento deste projeto foram:
-
-* **Linguagem:** Node.js (Recomendado `v18.x` ou superior)
-* **Framework Web:** Express `^5.2.1`
-* **ORM:** Prisma `^7.4.1` (Prisma Client e Prisma CLI)
-* **Banco de Dados:** MySQL (Driver `mysql2 ^3.18.0`)
-* **Utilitários:** * `cors ^2.8.6` (Para permitir requisições de diferentes origens)
-  * `nodemon ^3.1.14` (Dependência de desenvolvimento para auto-reload)
+Para informações detalhadas sobre rotas, arquitetura e dados exatos de cada endpoint da API, consulte a **documentação em PDF** fornecida junto com o link deste repositório.
 
 ## ⚙️ Pré-requisitos
 
-Antes de começar, você precisará ter instalado em sua máquina:
-* [Node.js](https://nodejs.org/en/)
+Antes de começar, certifique-se de ter instalado em sua máquina:
+* [Node.js](https://nodejs.org/en/) (v18.x ou superior)
 * [MySQL](https://dev.mysql.com/downloads/installer/) (rodando localmente, geralmente na porta 3306)
+* [Postman](https://www.postman.com/downloads/) ou Insomnia (para testar as requisições da API)
 * Git
 
 ## 🚀 Como rodar o projeto localmente
 
-Siga o passo a passo abaixo para executar a aplicação na sua máquina:
+Siga o passo a passo abaixo para executar a aplicação e testá-la:
 
 ### 1. Clone o repositório
 ```bash
@@ -36,66 +26,40 @@ npm install
 ```
 
 ### 3. Configure as Variáveis de Ambiente
-Crie um arquivo chamado `.env` na raiz do projeto. Adicione a string de conexão com o seu banco de dados MySQL local. Exemplo:
+Crie um arquivo chamado `.env` na raiz do projeto e adicione a string de conexão com o seu banco de dados MySQL local. Exemplo:
 
 ```env
 DATABASE_URL="mysql://root:root@localhost:3306/db_api_2026"
 ```
-*(Substitua `root:root` pelo seu usuário e senha reais do MySQL, caso sejam diferentes).*
+*(Lembre-se de substituir `root:root` pelo seu usuário e senha reais do MySQL, caso sejam diferentes).*
 
-### 4. Sincronize o Banco de Dados (Migrations)
-Execute o comando do Prisma para sincronizar o arquivo `schema.prisma` e criar as tabelas `usuario` e `perfil` no seu banco de dados:
+### 4. Sincronize o Banco de Dados
+Execute o comando do Prisma para sincronizar os modelos e criar as tabelas no banco de dados:
 
 ```bash
 npx prisma migrate dev
 ```
 
 ### 5. Inicie o Servidor
-Para rodar a API em modo de desenvolvimento (o servidor reiniciará automaticamente caso você altere o código), execute:
+Para rodar a API em modo de desenvolvimento (com auto-reload), execute:
 
 ```bash
 npm run dev
 ```
-*O terminal exibirá a mensagem: `Servidor rodando na porta 3001 🚀`*
+*Após rodar o comando, o terminal deverá exibir a mensagem: `Servidor rodando na porta 3001 🚀`*
 
 ---
 
-## 🛣️ Rotas da API (Endpoints) e Como Testar
+## 🧪 Como testar a API no Postman
 
-A API roda baseada no prefixo `/api/usuarios`. Abaixo estão as rotas disponíveis e o formato esperado para as requisições que exigem envio de dados (Body).
+Com o servidor rodando no seu terminal, abra o aplicativo do **Postman** para simular o front-end e testar as rotas:
 
-### Criar Usuário E Perfil
-* **Método:** `POST`
-* **Rota:** `/api/usuarios`
-* **Body (JSON):**
-```json
-{
-  "nome": "Carlos Cruz",
-  "email": "carlos@email.com",
-  "senha": "senha_segura"
-}
-```
-
-### Listar Todos os Usuários
-* **Método:** `GET`
-* **Rota:** `/api/usuarios`
-* *Retorna um array com todos os usuários e os dados de seus respectivos perfis (tabela unida).*
-
-### Buscar Usuário por ID
-* **Método:** `GET`
-* **Rota:** `/api/usuarios/:id`
-
-### Atualizar Usuário
-* **Método:** `PUT`
-* **Rota:** `/api/usuarios/:id`
-* **Body (JSON):**
-```json
-{
-  "nome": "Carlos Cruz Atualizado",
-  "email": "novoemail@email.com"
-}
-```
-
-### Deletar Usuário
-* **Método:** `DELETE`
-* **Rota:** `/api/usuarios/:id`
+1. Clique em **New** > **HTTP Request**.
+2. Na barra de endereço, digite a URL base da API: `http://localhost:3001/api/usuarios` (adicione `/ID_AQUI` no final para rotas específicas de um usuário).
+3. No botão dropdown ao lado da URL, escolha o **Método HTTP** correspondente (`GET`, `POST`, `PUT` ou `DELETE`).
+4. **Para rotas de Criação (`POST`) e Atualização (`PUT`):**
+   * Logo abaixo da URL, clique na aba **Body**.
+   * Selecione a opção **raw**.
+   * No menu dropdown que aparecer (geralmente escrito *Text*), mude para **JSON**.
+   * Escreva o objeto JSON com os dados do usuário (conforme especificado no PDF de documentação).
+5. Clique no botão azul **Send** para enviar a requisição e veja a resposta do banco de dados na parte inferior da tela.
